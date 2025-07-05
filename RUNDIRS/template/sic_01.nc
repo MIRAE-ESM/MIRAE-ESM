@@ -1,0 +1,1 @@
+/home/sul/GRIMs-NEMO/NEMO_DATA/sic_01.nc

@@ -1,0 +1,1 @@
+/home/sul/GRIMs-NEMO/NEMO_DATA/sss_data.nc

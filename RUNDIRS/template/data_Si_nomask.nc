@@ -1,0 +1,1 @@
+/home/sul/GRIMs-NEMO/NEMO_DATA/data_Si_nomask.nc

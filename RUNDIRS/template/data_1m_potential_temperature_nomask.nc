@@ -1,0 +1,1 @@
+/home/sul/GRIMs-NEMO/NEMO_DATA/data_1m_potential_temperature_nomask.nc

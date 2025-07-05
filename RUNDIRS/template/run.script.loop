@@ -1,0 +1,72 @@
+#!/bin/sh
+#PBS -l nodes=5:ppn=64
+#PBS -q workq
+#PBS -V
+#PBS -N GRIMs-NEMO
+#PBS -j eo
+
+echo 'run start'
+
+cd $PBS_O_WORKDIR
+
+SYEAR=1979
+EYEAR=1990
+
+YEAR=1979
+FHE=`/home/sul/GRIMs-NEMO/GRIMs/libs/etc/maketim ${SYEAR}010100 -d ${YEAR}010100`
+
+while [ $YEAR -le $EYEAR ]; do
+
+  YS=$YEAR
+  YE=`expr $YS + 1`
+  FH=`/home/sul/GRIMs-NEMO/GRIMs/libs/etc/maketim ${YS}010100 -d ${YE}010100`
+
+  if [ $FHE -lt 10000 ]; then
+    HR8=0000$FHE
+  elif [ $FHE -lt 100000 ]; then
+    HR8=000$FHE
+  elif [ $FHE -lt 1000000 ]; then
+    HR8=00$FHE
+  fi
+  
+  FHS=`expr $FHE + 1`
+  FHE=`expr $FHE + $FH`
+
+  if [ $YEAR -eq $SYEAR ]; then
+    ./mtn.x > mtn.out
+    ./chgr.x > chgr.out
+    ./sfc0.x > sfc0.out
+    /usr/bin/cp -f sigit sig.ft00
+    /usr/bin/cp -f sfci sfc.ft00
+    /usr/bin/cp -f /home/sul/GRIMs-NEMO/NEMO_DATA/EMPave_old.dat EMPave_old.dat
+    RST=.false.
+  else
+    RST=.true.
+  fi
+
+  sed "s/@FHE@/${FHE}/g" fcst.parm.tmp > fcst.parm
+  sed "s/@HR8@/${HR8}/g" namelist_ice_cfg.tmp > namelist_ice_cfg
+  sed "s/@HR8@/${HR8}/g" namelist_top_cfg.tmp > namelist_top_cfg
+  sed -i "s/@RST@/${RST}/g" namelist_top_cfg
+  sed "s/@HR8@/${HR8}/g" namelist_cfg.tmp > namelist_cfg
+  sed -i "s/@RST@/${RST}/g" namelist_cfg
+  sed -i "s/@FHS@/${FHS}/g" namelist_cfg
+  sed -i "s/@FHE@/${FHE}/g" namelist_cfg
+
+  mpirun -f $PBS_NODEFILE -ppn 56 -np 224 ./fcst.x : -np 56 ./nemo.exe 1>run.output 2>&1
+
+  fin=`grep 'Wall-clock-time' run.output | wc -l`
+  if [ $fin -eq 0 ]; then
+    exit 8
+  fi
+
+  mkdir -p $YEAR
+  /usr/bin/mv -f ORCA2_*.nc grims.*.nc ctm.bpch.* run.output ocean.output $YEAR
+  /usr/bin/cp -f sfci sigit sigitdt sig_restart nco_restart chemi megani cspeci EMPave.dat $YEAR
+  /usr/bin/mv -f EMPave.dat EMPave_old.dat
+
+  YEAR=`expr $YEAR + 1`
+
+done
+
+echo 'run end'

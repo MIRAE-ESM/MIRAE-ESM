@@ -1,0 +1,30 @@
+&paralist
+lowclim_= T,
+tprof_  = 2
+ncpus_  = 1
+jcap_   = 62
+levs_   = 28
+io_     = 144
+jo_     = 73
+ko_     = 30
+npes_   = 224
+ncol_   = 8
+/
+
+&inputfile
+mtnavg(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/top2m_avg.bin',mtnavg(2)='unformatted'
+mtnvar(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/top2m_var.bin',mtnvar(2)='unformatted'
+mtnmax(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/top2m_max.bin',mtnmax(2)='unformatted'
+mtnslm(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/top2m_slm.bin',mtnslm(2)='unformatted'
+mtnvar4(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/top8m_var.bin',mtnvar4(2)='unformatted'
+rivermap(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/flwdirGSWP2.hlf.asc',rivermap(2)='formatted'
+bc(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/MACC.nc',bc(2)='BC'
+dust(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/MACC.nc',dust(2)='DUST'
+oc(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/MACC.nc',oc(2)='OC'
+seasalt(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/MACC.nc',seasalt(2)='SEASALT'
+so4(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/MACC.nc',so4(2)='SO4'
+ozone(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/ozone_cams.nc',ozone(2)='ozone'
+co2(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/co2_gosat.nc',co2(2)='co2'
+swdata(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/RRTMG_SW_DATA_DBL',swdata(2)='unformatted'
+lwdata(1)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/RRTMG_LW_DATA_DBL',lwdata(2)='unformatted'
+/

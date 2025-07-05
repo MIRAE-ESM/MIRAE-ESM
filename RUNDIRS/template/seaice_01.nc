@@ -1,0 +1,1 @@
+/home/sul/GRIMs-NEMO/NEMO_DATA/seaice_01.nc

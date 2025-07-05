@@ -1,0 +1,60 @@
+# GRIMs-NEMO
+
+**GRIMs-NEMO** is a coupled climate modeling system that integrates 
+the **GRIMs atmospheric model** with the **NEMO ocean model**.
+This top-level repository organizes the full modeling system using Git submodules.
+
+---
+
+## Repository Structure
+
+This repository includes the following Git submodules:
+
+1. GRIMs-libs
+  Path: ./GRIMs/libs
+  URL: https://github.com/GRIMs-NEMO/GRIMs-libs.git
+  Description: Libraries for the GRIMs general circulation model
+
+2. GRIMs-srcs
+  Path: ./GRIMs/srcs
+  URL: https://github.com/GRIMs-NEMO/GRIMs-srcs.git
+  Description: Source code for the GRIMs general circulation model
+
+  2-1. GRIMs-chem (submodule within GRIMs-srcs)
+    Path: ./GRIMs/srcs/src/chem
+    URL: https://github.com/GRIMs-NEMO/GRIMs-chem.git
+    Description: Chemistry module for the GRIMs general circulation model
+
+3. GRIMs-runs
+  Path: ./GRIMs/runs
+  URL: https://github.com/GRIMs-NEMO/GRIMs-runs.git
+  Description: Run-time configurations, experiment setups, and job scripts
+
+4. NEMO-for-GRIMs
+  Path: ./NEMO
+  URL: https://github.com/GRIMs-NEMO/NEMO-for-GRIMs.git
+  Description: NEMO ocean model configured for GRIMs coupling
+
+---
+
+## Getting Started
+
+1. Clone this repository with all submodules (including nested):
+
+git clone --recurse-submodules https://github.com/GRIMs-NEMO/GRIMs-NEMO.git
+
+2. If already cloned without --recurse-submodules, run:
+
+git submodule update --init --recursive
+
+---
+
+## Contact
+
+For questions, bug reports, or collaboration inquiries, please contact:
+
+Seungun Lee
+Seoul National University
+hb3099@hotmail.com / hb3099@snu.ac.kr
+
+---

@@ -1,0 +1,1 @@
+/home/sul/GRIMs-NEMO/NEMO_DATA/weights_core_orca2_bicubic_noc.nc

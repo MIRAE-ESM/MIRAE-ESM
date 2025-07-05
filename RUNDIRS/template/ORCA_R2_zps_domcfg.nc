@@ -1,0 +1,1 @@
+/home/sul/GRIMs-NEMO/NEMO_DATA/ORCA_R2_zps_domcfg.nc

@@ -1,0 +1,37 @@
+ &NAMSFC0
+ FNIN='/home/sul/DATA/REAN2/1979/sfc.anl.1979010100.ieee',
+ FH=0.
+/
+ &NAMSFC
+ FNOROG='orogrd.smth'
+ FNMASK='slmsk'
+ FNMSKG='/home/sul/GRIMs-NEMO/GRIMs/libs/con/clim.maskh.grib'
+ CONDIR='/home/sul/GRIMs-NEMO/GRIMs/libs/con'
+ BINDIR='/home/sul/GRIMs-NEMO/GRIMs/srcs/bin'
+ FNGRB(4)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/clim.ice.r2.1979-1998.grib'
+ FNGRB(5)=''
+ FNGRB(6)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/clim.snow.r2.1979-1998.grib'
+ FNGRB(7)='/home/sul/DATA/SST/GISST/gisst22.1979.daily'
+ FNGRB(15)=''
+ FNGRB(33)='/home/sul/GRIMs-NEMO/GRIMs/libs/con/clim.ice.r2.1979-1998.grib'
+ lfgrb(1,4)=f
+ lfgrb(2,4)=f
+ lfgrb(3,4)=t
+ lfgrb(4,4)=f
+ lfgrb(5,4)=f
+ lfgrb(1,6)=F
+ lfgrb(2,6)=F
+ lfgrb(3,6)=F
+ lfgrb(4,6)=F
+ lfgrb(5,6)=F
+ lfgrb(1,7)=T
+ lfgrb(2,7)=F
+ lfgrb(3,7)=F
+ lfgrb(4,7)=F
+ lfgrb(5,7)=F
+ lfgrb(1,15)=F
+ lfgrb(2,15)=F
+ lfgrb(3,15)=F
+ lfgrb(4,15)=F
+ lfgrb(5,15)=F
+/
