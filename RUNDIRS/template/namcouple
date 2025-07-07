@@ -1,5 +1,5 @@
  $NFIELDS
-  17
+  18
  $END
 ##########################################################################
  $RUNTIME
@@ -15,7 +15,7 @@
 # OCN --------> ATM
 ###############################
 ## NEMO -> GRIMs, Ice fraction    #1
-OIceFrcT AIceFrcT 1 10800 2 oasis_restart.nc EXPORTED
+OIceFrc  AIceFrc  1 10800 2 oasis_restart.nc EXPORTED
 182 149 192 94 ocnT atmT
 P 2 P 0
 LOCTRANS SCRIPR
@@ -37,7 +37,16 @@ P 2 P 0
 LOCTRANS SCRIPR
 AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
-## NEMO -> GRIMs, Ice thickness   #4
+#
+## NEMO -> GRIMs, Ice albedo      #4
+O_AlbIce A_AlbIce 1 10800 2 oasis_restart.nc EXPORTED
+182 149 192 94 ocnT atmT
+P 2 P 0
+LOCTRANS SCRIPR
+AVERAGE
+CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
+#
+## NEMO -> GRIMs, Ice thickness   #5
 OIceTck  AIceTck  1 10800 2 oasis_restart.nc EXPORTED
 182 149 192 94 ocnT atmT
 P 2 P 0
@@ -45,7 +54,7 @@ LOCTRANS SCRIPR
 AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
-## NEMO -> GRIMs, Snow thickness  #5
+## NEMO -> GRIMs, Snow thickness  #6
 OSnwTck  ASnwTck  1 10800 2 oasis_restart.nc EXPORTED
 182 149 192 94 ocnT atmT
 P 2 P 0

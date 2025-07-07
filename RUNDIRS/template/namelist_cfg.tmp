@@ -145,12 +145,12 @@
    !             !                          ! categories !  reference  !     orientation      ! grids  !
 !***   send    ***
    sn_snd_temp   =   'oce and ice'          ,    'no'    ,     ''      ,         ''           ,   ''
-   sn_snd_alb    =   'none'                 ,    'no'    ,     ''      ,         ''           ,   ''
+   sn_snd_alb    =   'ice'                  ,    'no'    ,     ''      ,         ''           ,   ''
    sn_snd_thick  =   'ice and snow'         ,    'no'    ,     ''      ,         ''           ,   ''
    sn_snd_crt    =   'none'                 ,    'no'    , 'spherical' , 'eastward-northward' ,  'T'
    sn_snd_co2    =   'none'                 ,    'no'    ,     ''      ,         ''           ,   ''
    sn_snd_crtw   =   'none'                 ,    'no'    ,     ''      ,         ''           , 'U,V'
-   sn_snd_ifrac  =   'coupled'              ,    'no'    ,     ''      ,         ''           ,   ''
+   sn_snd_ifrac  =   'none'                 ,    'no'    ,     ''      ,         ''           ,   ''
    sn_snd_wlev   =   'none'                 ,    'no'    ,     ''      ,         ''           ,   ''
    sn_snd_cond   =   'none'                 ,    'no'    ,     ''      ,         ''           ,   ''
    sn_snd_thick1 =   'none'                 ,    'no'    ,     ''      ,         ''           ,   ''
