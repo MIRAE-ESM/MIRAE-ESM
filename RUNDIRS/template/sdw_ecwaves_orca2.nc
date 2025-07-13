@@ -1,1 +1,0 @@
-/home/sul/GRIMs-NEMO/NEMO_DATA/sdw_ecwaves_orca2.nc

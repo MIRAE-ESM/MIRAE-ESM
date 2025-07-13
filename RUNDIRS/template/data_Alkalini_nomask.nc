@@ -1,1 +1,0 @@
-/home/sul/GRIMs-NEMO/NEMO_DATA/data_Alkalini_nomask.nc

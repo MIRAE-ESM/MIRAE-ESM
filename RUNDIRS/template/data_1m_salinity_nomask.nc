@@ -1,1 +1,0 @@
-/home/sul/GRIMs-NEMO/NEMO_DATA/data_1m_salinity_nomask.nc

@@ -157,13 +157,13 @@ tracerinfo.dat path     : tracerinfo.dat
 ------------------------+------------------------------------------------------
 %%% DIAGNOSTIC MENU %%% :
 Diagnostic Entries ---> :  L   Tracers to print out for each diagnostic
-ND05: Sulfate prod/loss : 28   all
+ND05: Sulfate prod/loss : 47   all
 ND06: Dust aer source   :  1   all
-ND07: Carbon aer source : 28   all
+ND07: Carbon aer source : 47   all
 ND08: Seasalt aer source:  1   all
 ND11: Acetone sources   :  1   all
 ND12: BL fraction       :  0   all
-ND13: Sulfur sources    : 28   all
+ND13: Sulfur sources    : 47   all
 ND14: Cld conv mass flx :  0   all
 ND15: BL mix mass flx   :  0   all
 ND16: LS/Conv prec frac :  0   all
@@ -176,20 +176,20 @@ ND28: Biomass emissions :  1   1 4 5 9 10 11 18 19 20 21 26 30 34 35
 ND29: CO sources        :  1   all
 ND30: Land Map          :  1   all
 ND31: Surface pressure  :  1   all
-ND32: NOx sources       : 28   all
+ND32: NOx sources       : 47   all
 ND33: Column tracer     :  0   all
 ND34: Biofuel emissions :  1   1 4 5 9 10 11 18 19 20 21
 ND35: Tracers at 500 mb :  0   all
 ND36: Anthro emissions  :  1   1 4 5 9 10 11 18 19 20 21 2 7
 ND37: Updraft scav frac :  0   all
-ND38: Cld Conv scav loss: 28   all
-ND39: Wetdep scav loss  : 28   all
+ND38: Cld Conv scav loss: 47   all
+ND39: Wetdep scav loss  : 47   all
 ND41: Afternoon PBL ht  :  0   all
 ND43: Chem OH,NO,HO2,NO2:  0   all
   ==> OH/HO2 time range :       0 24
   ==> NO/NO2 time range :      10 14
 ND44: Drydep flx/vel    :  1   1 2 3 7 8 15 16 17 20 22 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43
-ND45: Tracer Conc's     : 28   all
+ND45: Tracer Conc's     : 47   all
   ==> ND45 Time range   :       0 24
 ND46: Biogenic emissions:  1   all
 ND47: 24-h avg trc conc :  0   all
@@ -199,9 +199,9 @@ ND55: Tropopause height :  0   all
 ND56: Lightning flashes :  0   all
 ND57: Potential T       :  0   all
 ND62: Inst column maps  :  0   all
-ND66: DAO 3-D fields    : 28   all
+ND66: DAO 3-D fields    : 47   all
 ND67: DAO 2-D fields    :  1   all
-ND68: Airmass/Boxheight : 28   all
+ND68: Airmass/Boxheight : 47   all
 ND69: Surface area      :  1   all
 ND70: Debug output      :  0   all
 ------------------------+------------------------------------------------------
@@ -212,11 +212,11 @@ Tracers to include      : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 
 Frequency [min]         : 60
 Lon_LL, Lon_UR [deg]    : -180 180
 Lat_LL, Lat_UR [deg]    :  -90  90
-LMIN, LMAX of region    :    1  28
+LMIN, LMAX of region    :    1  47
 ------------------------+------------------------------------------------------
 %%% PROD & LOSS MENU %%%:
 Turn on P/L (ND65) diag?: F
-# of levels for ND65    : 28
+# of levels for ND65    : 47
 Save O3 P/L (ND20)?     : F
 Number of P/L families  : 4
 1st chemical family     : POX: O3 NO2 2NO3 PAN PMN PPN HNO4 3N2O5 HNO3

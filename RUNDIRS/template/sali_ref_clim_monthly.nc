@@ -1,1 +1,0 @@
-/home/sul/GRIMs-NEMO/NEMO_DATA/sali_ref_clim_monthly.nc

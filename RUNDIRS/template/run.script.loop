@@ -9,13 +9,44 @@ echo 'run start'
 
 cd $PBS_O_WORKDIR
 
-SYEAR=1979
-EYEAR=1990
+SYEAR=1979 # start year
+EYEAR=1990 # end year
 
-YEAR=1979
+YEAR=1979  # this year
 FHE=`/home/sul/GRIMs-NEMO/GRIMs/libs/etc/maketim ${SYEAR}010100 -d ${YEAR}010100`
 
 while [ $YEAR -le $EYEAR ]; do
+
+  if [ $YEAR -eq $SYEAR ]; then
+
+    # copy compiled executables
+    /usr/bin/cp -f /home/sul/GRIMs-NEMO/GRIMs/srcs/bin/chgr.x .
+    /usr/bin/cp -f /home/sul/GRIMs-NEMO/GRIMs/srcs/bin/fcst.x .
+    /usr/bin/cp -f /home/sul/GRIMs-NEMO/GRIMs/srcs/bin/mtn.x .
+    /usr/bin/cp -f /home/sul/GRIMs-NEMO/GRIMs/srcs/bin/sfc0.x .
+    /usr/bin/cp -f /home/sul/GRIMs-NEMO/NEMO/cfgs/CPL_GRIMs/BLD/bin/nemo.exe .
+
+    # copy or link input data files
+    /usr/bin/cp -f /home/sul/GRIMs-NEMO/NEMO_DATA/EMPave_old.dat EMPave_old.dat
+    /usr/bin/ln -sf /home/sul/GRIMs-NEMO/NEMO_DATA/*.nc .
+
+    # prepare initial conditions
+    ./mtn.x > mtn.out
+    ./chgr.x > chgr.out
+    ./sfc0.x > sfc0.out
+    /usr/bin/cp -f sigit sig.ft00
+    /usr/bin/cp -f sfci sfc.ft00
+
+    # do not restart in start year
+    mkdir -p rst
+    RST=.false.
+
+  else
+
+    # do restart
+    RST=.true.
+
+  fi
 
   YS=$YEAR
   YE=`expr $YS + 1`
@@ -32,18 +63,7 @@ while [ $YEAR -le $EYEAR ]; do
   FHS=`expr $FHE + 1`
   FHE=`expr $FHE + $FH`
 
-  if [ $YEAR -eq $SYEAR ]; then
-    ./mtn.x > mtn.out
-    ./chgr.x > chgr.out
-    ./sfc0.x > sfc0.out
-    /usr/bin/cp -f sigit sig.ft00
-    /usr/bin/cp -f sfci sfc.ft00
-    /usr/bin/cp -f /home/sul/GRIMs-NEMO/NEMO_DATA/EMPave_old.dat EMPave_old.dat
-    RST=.false.
-  else
-    RST=.true.
-  fi
-
+  # generate namelist files
   sed "s/@FHE@/${FHE}/g" fcst.parm.tmp > fcst.parm
   sed "s/@HR8@/${HR8}/g" namelist_ice_cfg.tmp > namelist_ice_cfg
   sed "s/@HR8@/${HR8}/g" namelist_top_cfg.tmp > namelist_top_cfg
@@ -53,18 +73,23 @@ while [ $YEAR -le $EYEAR ]; do
   sed -i "s/@FHS@/${FHS}/g" namelist_cfg
   sed -i "s/@FHE@/${FHE}/g" namelist_cfg
 
+  # execution of GRIMs-NEMO
   mpirun -f $PBS_NODEFILE -ppn 56 -np 224 ./fcst.x : -np 56 ./nemo.exe 1>run.output 2>&1
 
+  # error check
   fin=`grep 'Wall-clock-time' run.output | wc -l`
   if [ $fin -eq 0 ]; then
     exit 8
   fi
 
+  # move output data to the new directory
   mkdir -p $YEAR
   /usr/bin/mv -f ORCA2_*.nc grims.*.nc ctm.bpch.* run.output ocean.output $YEAR
-  /usr/bin/cp -f sfci sigit sigitdt sig_restart nco_restart chemi megani cspeci EMPave.dat $YEAR
+  /usr/bin/cp -f sfci sigit sigitdt sig_restart nco_restart cpl_restart lsm_restart $YEAR
+  /usr/bin/cp -f chemi megani cspeci EMPave.dat $YEAR
   /usr/bin/mv -f EMPave.dat EMPave_old.dat
 
+  # to the next year
   YEAR=`expr $YEAR + 1`
 
 done

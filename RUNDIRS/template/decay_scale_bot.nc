@@ -1,1 +1,0 @@
-/home/sul/GRIMs-NEMO/NEMO_DATA/decay_scale_bot.nc

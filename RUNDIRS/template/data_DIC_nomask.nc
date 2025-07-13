@@ -1,1 +1,0 @@
-/home/sul/GRIMs-NEMO/NEMO_DATA/data_DIC_nomask.nc

@@ -1,1 +1,0 @@
-/home/sul/GRIMs-NEMO/NEMO_DATA/profiles_01.nc

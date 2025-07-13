@@ -1,1 +1,0 @@
-/home/sul/GRIMs-NEMO/NEMO_DATA/u_10.15JUNE2009_fill.nc

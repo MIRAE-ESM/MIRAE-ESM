@@ -1,1 +1,0 @@
-/home/sul/GRIMs-NEMO/NEMO_DATA/par.orca.nc
