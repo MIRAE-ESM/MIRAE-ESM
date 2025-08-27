@@ -22,7 +22,7 @@
    cn_exp      =  "ORCA2"  !  experience name
    nn_it000    =   @FHS@   !  first time step
    nn_itend    =   @FHE@   !  last  time step (std 5475)
-   nn_date0    =  19790101 !  date at nit_0000 (format yyyymmdd) used if ln_rstart=F or (ln_rstart=T and nn_rstctl=0 or 1)
+   nn_date0    =  @INIT_YEAR@0101 !  date at nit_0000 (format yyyymmdd) used if ln_rstart=F or (ln_rstart=T and nn_rstctl=0 or 1)
    nn_leapy    =       1   !  Leap year calendar (1) or not (0)
    ln_rstart   =   @RST@   !  start from rest (F) or from a restart file (T)
       nn_euler    =    1      !  = 0 : start with forward time step if ln_rstart=T

@@ -7,8 +7,8 @@ levs_   = 47
 io_     = 144
 jo_     = 73
 ko_     = 30
-npes_   = 224
-ncol_   = 8
+npes_   = 480
+ncol_   = 20
 /
 
 &inputfile

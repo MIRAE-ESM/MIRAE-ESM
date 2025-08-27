@@ -3,7 +3,7 @@
  $END
 ##########################################################################
  $RUNTIME
-  2147483647
+  @DFSEC@
  $END
 ##########################################################################
  $NLOGPRT
@@ -15,7 +15,7 @@
 # OCN --------> ATM
 ###############################
 ## NEMO -> GRIMs, Ice fraction    #1
-OIceFrc  AIceFrc  1 10800 2 oasis_restart.nc EXPORTED
+OIceFrc  AIceFrc  1 10800 2 oasis_ocn_restart.nc EXPORTED
 182 149 192 94 ocnT atmT
 P 2 P 0
 LOCTRANS SCRIPR
@@ -23,7 +23,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## NEMO -> GRIMs, SST             #2
-O_SSTSST A_SSTSST 1 10800 2 oasis_restart.nc EXPORTED
+O_SSTSST A_SSTSST 1 10800 2 oasis_ocn_restart.nc EXPORTED
 182 149 192 94 ocnT atmT
 P 2 P 0
 LOCTRANS SCRIPR
@@ -31,7 +31,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## NEMO -> GRIMs, Ice temperature #3
-O_TepIce A_TepIce 1 10800 2 oasis_restart.nc EXPORTED
+O_TepIce A_TepIce 1 10800 2 oasis_ocn_restart.nc EXPORTED
 182 149 192 94 ocnT atmT
 P 2 P 0
 LOCTRANS SCRIPR
@@ -39,7 +39,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## NEMO -> GRIMs, Ice albedo      #4
-O_AlbIce A_AlbIce 1 10800 2 oasis_restart.nc EXPORTED
+O_AlbIce A_AlbIce 1 10800 2 oasis_ocn_restart.nc EXPORTED
 182 149 192 94 ocnT atmT
 P 2 P 0
 LOCTRANS SCRIPR
@@ -47,7 +47,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## NEMO -> GRIMs, Ice thickness   #5
-OIceTck  AIceTck  1 10800 2 oasis_restart.nc EXPORTED
+OIceTck  AIceTck  1 10800 2 oasis_ocn_restart.nc EXPORTED
 182 149 192 94 ocnT atmT
 P 2 P 0
 LOCTRANS SCRIPR
@@ -55,7 +55,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## NEMO -> GRIMs, Snow thickness  #6
-OSnwTck  ASnwTck  1 10800 2 oasis_restart.nc EXPORTED
+OSnwTck  ASnwTck  1 10800 2 oasis_ocn_restart.nc EXPORTED
 182 149 192 94 ocnT atmT
 P 2 P 0
 LOCTRANS SCRIPR
@@ -66,7 +66,7 @@ CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 # ATM --------> OCN
 ###############################
 ## GRIMs -> NEMO, taux    #1
-A_OTaux1 O_OTaux1 1 10800 2 oasis_restart.nc EXPORTED
+A_OTaux1 O_OTaux1 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -74,7 +74,7 @@ AVERAGE
 BILINEAR LR SCALAR LATLON 1
 #
 ## GRIMs -> NEMO, tauy    #2
-A_OTauy1 O_OTauy1 1 10800 2 oasis_restart.nc EXPORTED
+A_OTauy1 O_OTauy1 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -82,7 +82,7 @@ AVERAGE
 BILINEAR LR SCALAR LATLON 1
 #
 ## GRIMs -> NEMO, ice qsr #3
-A_QsrIce O_QsrIce 1 10800 2 oasis_restart.nc EXPORTED
+A_QsrIce O_QsrIce 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -90,7 +90,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## GRIMs -> NEMO, total qsr #4
-A_QsrMix O_QsrMix 1 10800 2 oasis_restart.nc EXPORTED
+A_QsrMix O_QsrMix 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -98,7 +98,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## GRIMs -> NEMO, ice qns #5
-A_QnsIce O_QnsIce 1 10800 2 oasis_restart.nc EXPORTED
+A_QnsIce O_QnsIce 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -106,7 +106,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## GRIMs -> NEMO, total qns #6
-A_QnsMix O_QnsMix 1 10800 2 oasis_restart.nc EXPORTED
+A_QnsMix O_QnsMix 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -114,7 +114,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## GRIMs -> NEMO, total rain #7
-ATotRain OTotRain 1 10800 2 oasis_restart.nc EXPORTED
+ATotRain OTotRain 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -122,7 +122,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## GRIMs -> NEMO, total snow #8
-ATotSnow OTotSnow 1 10800 2 oasis_restart.nc EXPORTED
+ATotSnow OTotSnow 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -130,7 +130,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## GRIMs -> NEMO, total evap #9
-ATotEvap OTotEvap 1 10800 2 oasis_restart.nc EXPORTED
+ATotEvap OTotEvap 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -138,7 +138,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## GRIMs -> NEMO, ice evap #10
-AIceEvap OIceEvap 1 10800 2 oasis_restart.nc EXPORTED
+AIceEvap OIceEvap 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -146,7 +146,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## GRIMs -> NEMO, 10m wind #11
-A_Wind10 O_Wind10 1 10800 2 oasis_restart.nc EXPORTED
+A_Wind10 O_Wind10 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
@@ -154,7 +154,7 @@ AVERAGE
 CONSERV LR SCALAR LATLON 1 FRACAREA FIRST
 #
 ## GRIMs -> NEMO, qns derivative #12
-A_dQnsdT O_dQnsdT 1 10800 2 oasis_restart.nc EXPORTED
+A_dQnsdT O_dQnsdT 1 10800 2 oasis_atm_restart.nc EXPORTED
 192 94 182 149 atmT ocnT
 P 0 P 2
 LOCTRANS SCRIPR
