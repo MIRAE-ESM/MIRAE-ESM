@@ -21,7 +21,7 @@
 !------------------------------------------------------------------------------
 &nampar         !   Generic parameters
 !------------------------------------------------------------------------------
-   cn_icerst_in     = "ORCA2_@HR8@_restart_ice"   !  suffix of ice restart name (input)
+   cn_icerst_in     = "ORCA2_@IT0@_restart_ice"   !  suffix of ice restart name (input)
    cn_icerst_out    = "restart_ice"   !  suffix of ice restart name (output)
    cn_icerst_indir  = "rst"           !  directory to read   input ice restarts
    cn_icerst_outdir = "rst"           !  directory to write output ice restarts

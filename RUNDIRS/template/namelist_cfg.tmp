@@ -20,17 +20,17 @@
 &namrun        !   parameters of the run
 !-----------------------------------------------------------------------
    cn_exp      =  "ORCA2"  !  experience name
-   nn_it000    =   @FHS@   !  first time step
-   nn_itend    =   @FHE@   !  last  time step (std 5475)
-   nn_date0    =  @INIT_YEAR@0101 !  date at nit_0000 (format yyyymmdd) used if ln_rstart=F or (ln_rstart=T and nn_rstctl=0 or 1)
+   nn_it000    =   @ITS@   !  first time step
+   nn_itend    =   @ITE@   !  last  time step (std 5475)
+   nn_date0    =  @YEAR@0101 !  date at nit_0000 (format yyyymmdd) used if ln_rstart=F or (ln_rstart=T and nn_rstctl=0 or 1)
    nn_leapy    =       1   !  Leap year calendar (1) or not (0)
    ln_rstart   =   @RST@   !  start from rest (F) or from a restart file (T)
       nn_euler    =    1      !  = 0 : start with forward time step if ln_rstart=T
-      nn_rstctl   =    2      !  restart control ==> activated only if ln_rstart=T
+      nn_rstctl   =    0      !  restart control ==> activated only if ln_rstart=T
       !                          !    = 0 nn_date0 read in namelist ; nn_it000 : read in namelist
       !                          !    = 1 nn_date0 read in namelist ; nn_it000 : check consistancy between namelist and restart
       !                          !    = 2 nn_date0 read in restart  ; nn_it000 : check consistancy between namelist and restart
-      cn_ocerst_in    = "ORCA2_@HR8@_restart"   !  suffix of ocean restart name (input)
+      cn_ocerst_in    = "ORCA2_@IT0@_restart"   !  suffix of ocean restart name (input)
       cn_ocerst_indir = "rst"       !  directory from which to read input ocean restarts
       cn_ocerst_out   = "restart"   !  suffix of ocean restart name (output)
       cn_ocerst_outdir = "rst"      !  directory in which to write output ocean restarts
@@ -39,7 +39,7 @@
 !-----------------------------------------------------------------------
 &namdom        !   time and space domain
 !-----------------------------------------------------------------------
-   rn_rdt      = 3600.     !  time step for the dynamics and tracer
+   rn_rdt      = 5400.     !  time step for the dynamics and tracer
 /
 !-----------------------------------------------------------------------
 &namcfg        !   parameters of the configuration                      (default: use namusr_def in namelist_cfg)
@@ -55,7 +55,7 @@
 !-----------------------------------------------------------------------
    !                       ! =T  read T-S fields for:
    ln_tsd_init = .true.          !  ocean initialisation
-   ln_tsd_dmp  = .true.          !  T-S restoring   (see namtra_dmp)
+   ln_tsd_dmp  = .false.         !  T-S restoring   (see namtra_dmp)
 
    cn_dir = './'     !  root directory for the T-S data location
    !___________!_________________________!___________________!___________!_____________!________!___________!__________________!__________!_______________!
@@ -86,7 +86,7 @@
 !-----------------------------------------------------------------------
 &namsbc        !   Surface Boundary Condition manager                   (default: NO selection)
 !-----------------------------------------------------------------------
-   nn_fsbc     = 3         !  frequency of SBC module call
+   nn_fsbc     = 2         !  frequency of SBC module call
                            !     (also = the frequency of sea-ice & iceberg model call)
                      ! Type of air-sea fluxes 
    ln_blk      = .false.   !  Bulk formulation                          (T => fill namsbc_blk )
@@ -213,7 +213,7 @@
    ln_rnf_mouth = .true.    !  specific treatment at rivers mouths
       rn_hrnf     =  15.e0    !  depth over which enhanced vertical mixing is used    (ln_rnf_mouth=T)
       rn_avt_rnf  =   1.e-3   !  value of the additional vertical mixing coef. [m2/s] (ln_rnf_mouth=T)
-   rn_rfact    =   1.e0    !  multiplicative factor for runoff
+   rn_rfact    =   0.9     !  multiplicative factor for runoff
 
    cn_dir = './'  !  root directory for the location of the runoff files
    !___________!_____________!___________________!___________!_____________!_________!___________!__________!__________!_______________!
@@ -356,7 +356,7 @@
 !-----------------------------------------------------------------------
 &namtra_dmp    !   tracer: T & S newtonian damping                      (default: OFF)
 !-----------------------------------------------------------------------
-   ln_tradmp   =  .true.   !  add a damping term (using resto.nc coef.)
+   ln_tradmp   =  .false.  !  add a damping term (using resto.nc coef.)
       nn_zdmp  =    0         !  vertical shape =0    damping throughout the water column
 /
 !!======================================================================

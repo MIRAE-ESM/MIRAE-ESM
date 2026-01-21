@@ -48,6 +48,11 @@
          <axis id="depthw" />
        </grid>
         <!--  -->
+       <grid id="gznl_W_3D" >
+         <domain id="znl_W" />
+         <axis id="depthw" />
+       </grid>
+        <!--  -->
        <grid id="grid_T_nfloat" >
          <domain id="grid_T" />
          <axis id="nfloat" />
