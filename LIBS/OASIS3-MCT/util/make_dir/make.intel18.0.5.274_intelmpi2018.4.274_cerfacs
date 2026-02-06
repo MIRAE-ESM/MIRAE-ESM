@@ -1,0 +1,73 @@
+#
+# Include file for OASIS3 Makefile for a Linux system using
+# Intel compilers and MPI
+# To use this, 
+# module purge
+# module load compiler/intel/18.0.5.274
+# module load mpi/intelmpi/2018.4.274
+# module load lib/phdf5/1.10.4_impi
+# module load lib/netcdf-fortran/4.4.4_phdf5_1.10.4
+# module load python/3.7.7
+#
+###############################################################################
+#
+# CHAN	: communication technique used in OASIS3 (MPI1/MPI2)
+CHAN            = MPI1
+#
+# Paths for libraries, object files and binaries
+#
+# COUPLE	: path for oasis3-mct main directory
+COUPLE          = $(OASIS3_ROOT)
+#
+# ARCHDIR       : directory created when compiling
+ARCHDIR         = $(HOME)/INSTALL/oasis3-mct
+#
+# MPI command (for pyoasis scripts)
+# MPI from /opt/intel/impi/2018.4.274 by module load mpi/intelmpi/2018.4.274
+MPIRUN      = mpirun
+#
+# NETCDF library
+NETCDF_INCLUDE = ${NETCDF4_INCDIR} # from module load lib/netcdf-fortran/4.4.4_phdf5_1.10.4
+NETCDF_LIBRARY = `nf-config --flibs`
+#
+# Make command
+MAKE        = gmake
+# Compilers
+F90         = mpiifort # underlying ifort from module load compiler/intel/18.0.5.274
+F           = $(F90)
+f90         = $(F90)
+f           = $(F90)
+CC          = mpiicc
+# Linker (needed for shared libraries)
+LD          = $(F90)
+# Static libraries compilation options
+STATOPT     =
+# Shared libraries options
+DYNOPT      = -fPIC
+LDDYNOPT    = -shared
+# Static archiver
+AR          = ar
+ARFLAGS     = -ruv
+# Fortran libraries for C linking
+F2C_LIBS    = -lifcore -lifcoremt -lifport -limf
+#
+# CPP keys and compiler options
+#
+CPPDEF    = -Duse_comm_$(CHAN) -D__VERBOSE -DTREAT_OVERLAY
+#
+FCBASEFLAGS  = -O2 -xAVX -I.  -assume byterecl -mt_mpi -qopenmp
+#FCBASEFLAGS  = -g -traceback -fpe0 -O0 -check all -check noarg_temp_created -I. -assume byterecl -mt_mpi -qopenmp
+CCBASEFLAGS  = -O2 -qopenmp
+#
+# INC_DIR : includes all *mod for each library
+INC_DIR = -I$(ARCHDIR)/include
+#
+F90FLAGS = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+f90FLAGS = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+FFLAGS   = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+fFLAGS   = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+CCFLAGS  = $(CCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+LDFLAGS  = $(FCBASEFLAGS)
+F2C_LDFLAGS = $(F2C_LIBS)
+#
+#############################################################################

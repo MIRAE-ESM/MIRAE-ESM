@@ -1,0 +1,12 @@
+# Common variables obtained from values defined in users' make.inc
+# unless already provided in make.inc
+
+# LIBBUILD       : compilation directory for static libraries
+LIBBUILD         ?= $(ARCHDIR)/build-static/lib
+
+# LIBBUILDSHARED : compilation directory for shared libraries
+LIBBUILDSHARED   ?= $(ARCHDIR)/build-shared/lib
+
+# FLIBS:         : fortran link options for oasis examples
+FLIBS		 ?= $(NETCDF_LIBRARY)
+

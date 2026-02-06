@@ -1,0 +1,64 @@
+#
+# Include file for OASIS3 Makefile for a Mac Os system using
+# Gnu 10 compilers and OpenMPI 4.0.5 (from Homebrew)
+#
+###############################################################################
+#
+# CHAN	: communication technique used in OASIS3 (MPI1/MPI2)
+CHAN            = MPI1
+#
+# Paths for libraries, object files and binaries
+#
+# COUPLE	: path for oasis3-mct main directory
+COUPLE          = $(OASIS3_ROOT)
+#
+# ARCHDIR       : directory created when compiling
+ARCHDIR         = $(COUPLE)/INSTALL
+#
+# MPI command (for pyoasis scripts)
+MPIRUN      = mpirun --oversubscribe
+#
+# NETCDF library
+NETCDF_INCLUDE = /usr/local/include
+NETCDF_LIBRARY = -L/usr/local/lib -lnetcdff -lnetcdf
+#
+# Make command
+MAKE        = make
+# Compilers
+F90         = mpifort
+F           = $(F90)
+f90         = $(F90)
+f           = $(F90)
+CC          = mpicc
+# Linker (needed for shared libraries)
+LD          = $(F90)
+# Static libraries compilation options
+STATOPT     =
+# Shared libraries options
+DYNOPT      = -fPIC -Wl,-commons,use_dylibs
+LDDYNOPT    = -shared -L/usr/local/opt/libevent/lib -lm
+# Static archiver
+AR          = ar
+ARFLAGS     = -ruv
+#
+# CPP keys and compiler options
+#
+CPPDEF    = -Duse_comm_$(CHAN) -D__VERBOSE -DTREAT_OVERLAY
+#
+FCBASEFLAGS  = -O2 -I. -ffree-line-length-0 -fallow-argument-mismatch -mcmodel=medium
+#FCBASEFLAGS  = -g -ffree-line-length-0 -fallow-argument-mismatch -fcheck=bounds  -mcmodel=medium -fallow-argument-mismatch
+CCBASEFLAGS  = -O2
+#
+# INC_DIR : includes all *mod for each library
+INC_DIR = -I$(ARCHDIR)/include
+#
+F90FLAGS = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+f90FLAGS = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+FFLAGS   = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+fFLAGS   = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+CCFLAGS  = $(CCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+LDFLAGS  = $(FCBASEFLAGS)
+FLIBS    = $(NETCDF_LIBRARY)
+F2C_LDFLAGS = -lmpi_mpifh -lgfortran
+#
+#############################################################################

@@ -1,0 +1,15 @@
+NETCDF_INCDIR="-I${NETCDF}/include"
+NETCDF_LIBDIR="-L${NETCDF}/lib"
+NETCDF_LIB="-lnetcdff -lnetcdf"
+
+MPI_INCDIR=""
+MPI_LIBDIR=""
+MPI_LIB=""
+
+HDF5_INCDIR="-I${HDF5}/include"
+HDF5_LIBDIR="-L${HDF5}/lib"
+HDF5_LIB="-lhdf5_hl -lhdf5 -lz"
+
+OASIS_INCDIR="-I/home/sul/MIRAE-ESM/LIBS/OASIS3-MCT/include"
+OASIS_LIBDIR="-L/home/sul/MIRAE-ESM/LIBS/OASIS3-MCT/lib"
+OASIS_LIB="-lpsmile.MPI1 -lscrip -lmct -lmpeu"

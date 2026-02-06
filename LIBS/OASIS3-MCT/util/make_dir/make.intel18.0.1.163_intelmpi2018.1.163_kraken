@@ -1,0 +1,78 @@
+#
+# Include file for OASIS3 Makefile for nemo lenovo at Cerfacs with OpenMP
+# module load compiler/intel/18.0.1.163
+# module load mpi/intelmpi/2018.1.163
+# module load lib/netcdf-fortran/4.4.4_impi
+# module load lib/phdf5/1.8.20_impi
+#
+###############################################################################
+#
+# CHAN	: communication technique used in OASIS3 (MPI1/MPI2)
+CHAN            = MPI1
+#
+# Paths for libraries, object files and binaries
+#
+# COUPLE	: path for oasis3-mct main directory
+COUPLE          = $(HOME)/oasis3-mct
+#
+# ARCHDIR       : directory created when compiling
+ARCHDIR         = $(COUPLE)/KRAKEN_INTELMPI_OPENMP_oa3-mct
+#
+# MPI library
+#MPIDIR           = ${MPICOMPILER}
+MPIDIR           = /softs/intel/impi/2018.1.163
+MPIBIN           = $(MPIDIR)/bin64
+MPI_INCLUDE      = $(MPIDIR)/include64
+MPILIB           = -L$(MPIDIR)/lib64
+MPIRUN           = $(MPIBIN)/mpirun
+#
+# NETCDF library
+NETCDF_LIB_DIR1=/softs/local_intel/netcdf-fortran/4.4.4_phdf5/lib
+NETCDF_LIB_DIR2=/softs/local_intel/netcdf-c/4.6.1_phdf5/lib
+NETCDF_INCLUDE1=/softs/local_intel/netcdf-fortran/4.4.4_phdf5/include
+NETCDF_INCLUDE2=/softs/local_intel/netcdf-c/4.6.1_phdf5/include
+NETCDF_LIBRARY  =  -Wl,-rpath,/softs/local_intel/netcdf-fortran/4.4.4_phdf5/lib -L/softs/local_intel/netcdf-fortran/4.4.4_phdf5/lib -Wl,-rpath,/softs/local_intel/netcdf-c/4.6.1_phdf5/lib -L/softs/local_intel/netcdf-c/4.6.1_phdf5/lib -lnetcdff -lnetcdf
+#
+# Compiling and other commands
+MAKE        = gmake
+F90         = $(MPIBIN)/mpiifort -I$(MPI_INCLUDE)
+F           = $(F90)
+f90         = $(F90)
+f           = $(F90)
+CC          = $(MPIBIN)/mpiicc -I$(MPI_INCLUDE)
+LD          = $(MPIBIN)/mpiifort $(MPILIB)
+# Static libraries compilation options
+STATOPT     =
+# Shared libraries options
+DYNOPT      = -fPIC
+LDDYNOPT    = -shared
+AR          = ar
+ARFLAGS     = -ruv
+# Fortran libraries for C linking
+F2C_LIBS    = -lifcore -lifcoremt -lifport -limf
+#
+# CPP keys and compiler options
+# 
+CPPDEF    = -Duse_netCDF -Duse_comm_$(CHAN) -D__VERBOSE  -DTREAT_OVERLAY
+#
+# -g is necessary in F90FLAGS and LDFLAGS for pgf90 versions lower than 6.1
+# 
+FCBASEFLAGS = -O2 -xCORE-AVX2 -I. -assume byterecl -mt_mpi -qopenmp
+#FCBASEFLAGS  = -g -traceback -fpe0 -O0 -check all -check noarg_temp_created -I. -assume byterecl -mt_mpi -qopenmp
+CCBASEFLAGS  = -qopenmp
+#
+# INC_DIR : includes all *mod for each library
+ INC_DIR = -I$(ARCHDIR)/include
+# FLIBS : for toys when linking in local Makefile
+ FLIBS=${NETCDF_LIBRARY}
+###################
+#
+F90FLAGS    = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE1) -I$(NETCDF_INCLUDE2)
+f90FLAGS    = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE1) -I$(NETCDF_INCLUDE2)
+FFLAGS      = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE1) -I$(NETCDF_INCLUDE2)
+fFLAGS      = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE1) -I$(NETCDF_INCLUDE2)
+CCFLAGS     = $(CCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE1) -I$(NETCDF_INCLUDE2)
+LDFLAGS     = $(FCBASEFLAGS)
+F2C_LDFLAGS = $(F2C_LIBS)
+#
+#############################################################################

@@ -1,18 +1,52 @@
 #!/bin/sh
-#PBS -l nodes=9:ppn=64
+
+# ======================================================
+# The following section requires user settings.
+# ======================================================
+
+#PBS -l nodes=8:ppn=60+2:ppn=60
 #PBS -q workq
 #PBS -V
-#PBS -N GRIMs-NEMO
-#PBS -j eo
+#PBS -N MIRAE-ESM
+#PBS -e /dev/null
+#PBS -o /dev/null
 
-echo 'run start'
+NNODES_ATM=8
+NNODES_OCN=2
+PES_PER_NODE=60
+NPES1=$((NNODES_ATM * PES_PER_NODE))
+NPES2=$((NNODES_OCN * PES_PER_NODE))
+NCOL=10 # set 0 if unknown; otherwise try different values to find a suitable one
 
-cd $PBS_O_WORKDIR
+LIBDIR=/home/sul/MIRAE-ESM/GRIMs/libs
+CONDIR=${LIBDIR}/con
+BINDIR=/home/sul/MIRAE-ESM/GRIMs/srcs/bin
+OCNDIR=/home/sul/MIRAE-ESM/NEMO/cfgs/CPL_GRIMs/BLD/bin
+NEMO_DATA_DIR=/home/sul/MIRAE-ESM/NEMO_DATA
+CHEM_DATA_DIR=/home/sul/MIRAE-ESM/CHEM_DATA
 
 # Simulation period settings
 INIT_YEAR=1979   # Initial simulation year
 SYEAR=1979       # Start year of current simulation cycle
-EYEAR=1990       # End year of simulation
+EYEAR=1980       # End year of simulation
+
+# ======================================================
+# user setting section ends here
+# ======================================================
+
+cd $PBS_O_WORKDIR
+
+sed "s|@NPES@|${NPES1}|g" namelist.grims_ > namelist.grims
+sed -i "s|@NCOL@|${NCOL}|g" namelist.grims
+sed -i "s|@CONDIR@|${CONDIR}|g" namelist.grims
+sed "s|@CONDIR@|${CONDIR}|g" fcst.parm.tmp_ > fcst.parm.tmp
+sed -i "s|@BINDIR@|${BINDIR}|g" fcst.parm.tmp
+sed "s|@CHEM_DATA_DIR@|${CHEM_DATA_DIR}|g" input.geos_ > input.geos
+
+# Copy model executables and link input data
+if [ ! -s fcst.x ]; then cp -f ${BINDIR}/fcst.x .; fi
+if [ ! -s nemo.exe ]; then cp -f ${OCNDIR}/nemo.exe .; fi
+if [ ! -s ORCA_R2_zps_domcfg.nc ]; then ln -sf ${NEMO_DATA_DIR}/*.nc .; fi
 
 # Determine restart mode
 if [ $SYEAR -eq $INIT_YEAR ]; then
@@ -27,26 +61,16 @@ while [ $YEAR -le $EYEAR ]; do
   # Initialization step for cold start
   if [ "$RST" == ".false." ]; then
 
-    # Copy model executables
-    cp -f /home/sul/GRIMs-NEMO/GRIMs/srcs/bin/chgr.x .
-    cp -f /home/sul/GRIMs-NEMO/GRIMs/srcs/bin/fcst.x .
-    cp -f /home/sul/GRIMs-NEMO/GRIMs/srcs/bin/mtn.x .
-    cp -f /home/sul/GRIMs-NEMO/GRIMs/srcs/bin/sfc0.x .
-    cp -f /home/sul/GRIMs-NEMO/NEMO/cfgs/CPL_GRIMs/BLD/bin/nemo.exe .
-
-    # Copy or link input data
-    cp -f /home/sul/GRIMs-NEMO/NEMO_DATA/EMPave_old.dat EMPave_old.dat
-    ln -sf /home/sul/GRIMs-NEMO/NEMO_DATA/*.nc .
-
     # Remove old restart files
     rm -f chemi oasis_*_restart.nc
 
     # Prepare atmospheric initial conditions
-    ./mtn.x > mtn.out
-    ./chgr.x > chgr.out
-    ./sfc0.x > sfc0.out
-    cp -f sigit sig.ft00
-    cp -f sfci sfc.ft00
+    ${BINDIR}/mtn.x > mtn.out
+    ${BINDIR}/chgr.x > chgr.out
+    ${BINDIR}/sfc0.x > sfc0.out
+    cp sigit sig.ft00
+    cp sfci sfc.ft00
+    cp ${NEMO_DATA_DIR}/EMPave_old.dat .
 
     # Create directory for saving NEMO restart files
     mkdir -p rst
@@ -58,10 +82,10 @@ while [ $YEAR -le $EYEAR ]; do
   YE=$((YS + 1))     # next year (end year of this loop)
 
   # Hours since INIT_YEAR to YS
-  FH0=$(TZ=UTC /home/sul/GRIMs-NEMO/GRIMs/libs/etc/maketim ${INIT_YEAR}010100 -d ${YS}010100)
+  FH0=$(TZ=UTC /home/sul/MIRAE-ESM/GRIMs/libs/etc/maketim ${INIT_YEAR}010100 -d ${YS}010100)
 
   # Duration in hours/seconds
-  DFH=$(TZ=UTC /home/sul/GRIMs-NEMO/GRIMs/libs/etc/maketim ${YS}010100 -d ${YE}010100)
+  DFH=$(TZ=UTC /home/sul/MIRAE-ESM/GRIMs/libs/etc/maketim ${YS}010100 -d ${YE}010100)
   DFSEC=$((DFH * 3600))
 
   # Forecast hour start/end for this loop
@@ -87,8 +111,8 @@ while [ $YEAR -le $EYEAR ]; do
   sed -i "s/@ITE@/${ITE}/g" namelist_cfg
   sed "s/@DFSEC@/${DFSEC}/g" namcouple.tmp > namcouple
 
-  # Execute GRIMs-NEMO
-  mpirun -f $PBS_NODEFILE -ppn 60 -np 480 ./fcst.x : -np 60 ./nemo.exe 1>run.output 2>&1
+  # Execute MIRAE-ESM
+  mpirun -f $PBS_NODEFILE -ppn ${PES_PER_NODE} -np ${NPES1} ./fcst.x : -np ${NPES2} ./nemo.exe 1>run.output 2>&1
 
   # Check error
   fin=`grep 'Wall-clock-time' run.output | wc -l`
@@ -110,5 +134,3 @@ while [ $YEAR -le $EYEAR ]; do
   YEAR=`expr $YEAR + 1`
 
 done
-
-echo 'run end'

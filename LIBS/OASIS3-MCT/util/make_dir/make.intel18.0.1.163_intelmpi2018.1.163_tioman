@@ -1,0 +1,91 @@
+#
+# Include file for OASIS3 Makefile for a Linux system using 
+# Intel compilers and MPI
+# Works on tioman with the following modules loaded
+# module load intel/18.0.1.163
+# module load intelmpi/2018.1.163
+# module load lib/phdf5/1.10.4_impi
+# module load lib/netcdf-fortran/4.4.4_phdf5_1.10.4
+# module load python/3.7.7
+#
+###############################################################################
+#
+# CHAN	: communication technique used in OASIS3 (MPI1/MPI2)
+CHAN            = MPI1
+#
+# Paths for libraries, object files and binaries
+#
+# COUPLE	: path for oasis3-mct main directory
+COUPLE          = $(HOME)/oasis3-mct
+#
+# ARCHDIR       : directory created when compiling
+ARCHDIR         = $(COUPLE)/compile_intelmpi_tioman
+#
+# MPI library ((see the file /etc/modulefiles/mpi/openmpi-x86_64)
+MPIDIR      = /softs/intel/impi/2018.1.163
+MPIBIN      = $(MPIDIR)/bin64
+MPI_INCLUDE = $(MPIDIR)/include64 
+MPILIB      = -L$(MPIDIR)/lib64
+MPIRUN      = $(MPIBIN)/mpirun
+#
+# NETCDF library of the system
+NETCDF_LIB_DIR1=/softs/local_intel/netcdf-fortran/4.4.4_phdf5/lib
+NETCDF_LIB_DIR2=/softs/local_intel/netcdf-c/4.6.1_phdf5/lib
+NETCDF_INCLUDE1=/softs/local_intel/netcdf-fortran/4.4.4_phdf5/include
+NETCDF_INCLUDE2=/softs/local_intel/netcdf-c/4.6.1_phdf5/include
+NETCDF_LIBRARY  =  -Wl,-rpath,/softs/local_intel/netcdf-fortran/4.4.4_phdf5/lib -L/softs/local_intel/netcdf-fortran/4.4.4_phdf5/lib -Wl,-rpath,/softs/local_intel/netcdf-c/4.6.1_phdf5/lib -L/softs/local_intel/netcdf-c/4.6.1_phdf5/lib -lnetcdff -lnetcdf
+#
+# Compiling and other commands
+MAKE        = gmake
+F90         = $(MPIBIN)/mpiifort -I$(MPI_INCLUDE)
+F           = $(F90)
+f90         = $(F90)
+f           = $(F90)
+CC          = $(MPIBIN)/mpiicc -I$(MPI_INCLUDE)
+LD          = $(MPIBIN)/mpiifort $(MPILIB)
+# Static libraries compilation options
+STATOPT     =
+# Shared libraries options
+DYNOPT      = -fPIC
+LDDYNOPT    = -shared
+# Static archiver
+AR          = ar
+ARFLAGS     = -ruv
+# Fortran libraries for C linking
+F2C_LIBS    = -lifcore -lifcoremt -lifport -limf
+#
+# CPP keys and compiler options
+#  
+CPPDEF    = -Duse_comm_$(CHAN) -D__VERBOSE -DTREAT_OVERLAY
+#
+# 
+F90FLAGS_1  = -O2 -xAVX -I. -assume byterecl -mt_mpi -qopenmp
+#F90FLAGS_1  = -g -traceback -fpe0 -O0 -check all -check noarg_temp_created -I.  -assume byterecl -mt_mpi -qopenmp
+f90FLAGS_1  = $(F90FLAGS_1)
+FFLAGS_1    = $(F90FLAGS_1)
+fFLAGS_1    = $(F90FLAGS_1)
+CCFLAGS_1   = -O2 -qopenmp
+LDFLAGS     = $(F90FLAGS_1)
+#
+#
+###################
+#
+# Additional definitions that should not be changed
+#
+FLIBS		= $(NETCDF_LIBRARY)
+# BINDIR        : directory for executables
+BINDIR          = $(ARCHDIR)/bin
+# LIBBUILD      : contains a directory for each library
+LIBBUILD        = $(ARCHDIR)/build/lib
+# INCPSMILE     : includes all *o and *mod for each library
+INCPSMILE       = -I$(ARCHDIR)/include
+
+F90FLAGS  = $(F90FLAGS_1) $(CPPDEF) $(INCPSMILE) -I$(NETCDF_INCLUDE1) -I$(NETCDF_INCLUDE2)
+f90FLAGS  = $(f90FLAGS_1) $(CPPDEF) $(INCPSMILE) -I$(NETCDF_INCLUDE1) -I$(NETCDF_INCLUDE2)
+FFLAGS    = $(FFLAGS_1) $(CPPDEF) $(INCPSMILE) -I$(NETCDF_INCLUDE1) -I$(NETCDF_INCLUDE2)
+fFLAGS    = $(fFLAGS_1) $(CPPDEF) $(INCPSMILE) -I$(NETCDF_INCLUDE1) -I$(NETCDF_INCLUDE2)
+CCFLAGS   = $(CCFLAGS_1) $(CPPDEF) $(INCPSMILE) -I$(NETCDF_INCLUDE1) -I$(NETCDF_INCLUDE2)
+LDFLAGS   = $(F90FLAGS_1)
+F2C_LDFLAGS = $(F2C_LIBS)
+#
+#############################################################################

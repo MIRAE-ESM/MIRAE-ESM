@@ -1,12 +1,12 @@
 [submodule "GRIMs/libs"]
 	path = GRIMs/libs
-	url = https://github.com/GRIMs-NEMO/GRIMs-libs.git
+	url = https://github.com/MIRAE-ESM/GRIMs-libs.git
 [submodule "GRIMs/srcs"]
 	path = GRIMs/srcs
-	url = https://github.com/GRIMs-NEMO/GRIMs-srcs.git
+	url = https://github.com/MIRAE-ESM/GRIMs-srcs.git
 [submodule "GRIMs/runs"]
 	path = GRIMs/runs
-	url = https://github.com/GRIMs-NEMO/GRIMs-runs.git
+	url = https://github.com/MIRAE-ESM/GRIMs-runs.git
 [submodule "NEMO"]
 	path = NEMO
-	url = https://github.com/GRIMs-NEMO/NEMO-for-GRIMs.git
+	url = https://github.com/MIRAE-ESM/NEMO-for-GRIMs.git

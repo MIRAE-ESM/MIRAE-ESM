@@ -1,0 +1,78 @@
+#
+# Include file for OASIS3 Makefile for a Bull system using 
+# Intel Compiler and impi 
+# module load intelmpi/2018.5.274
+# module load intel/2018.5.274
+# module load netcdf-fortran/4.5.2_V2
+# module load netcdf-c/4.7.1_V2
+#
+###############################################################################
+#
+# CHAN	: communication technique used in OASIS3 (MPI1/MPI2)
+CHAN            = MPI1
+#
+# Paths for libraries, object files and binaries
+#
+# COUPLE	: path for oasis3-mct main directory
+COUPLE          = /scratch/work/coquartl/oasis3-mct
+#
+# ARCHDIR       : directory created when compiling
+ARCHDIR         = $(COUPLE)/compile_Belenos_impi_openmp
+#
+# MPI library
+MPIDIR           = /opt/softs/intel/2018.04/impi/2018.5.274/intel64
+MPIBIN           = $(MPIDIR)/bin
+MPI_INCLUDE      = $(MPIDIR)/include
+MPILIB           = -L$(MPIDIR)/lib
+MPIRUN           = $(MPIBIN)/mpirun --oversubscribe
+#
+# NETCDF library
+#NETCDF_INCLUDE  = /opt/softs/libraries/ICC_2018.5.274/netcdf-fortran-4.5.2_V2/include
+#NETCDF_LIBRARY  = -L/opt/softs/libraries/ICC_2018.5.274/netcdf-fortran-4.5.2_V2/lib -lnetcdff 
+NETCDF_INCLUDE  = /opt/softs/libraries/ICC_2018.5.274/netcdf_par-4.7.1_V2/include
+NETCDF_LIBRARY  = -L/opt/softs/libraries/ICC_2018.5.274/netcdf_par-4.7.1_V2/lib -lnetcdff -lnetcdf 
+#
+# Compiling and other commands
+# You may have to load the corresponding intel module to compile
+MAKE        = gmake
+F90         = $(MPIBIN)/mpiifort
+F           = $(F90)
+f90         = $(F90)
+f           = $(F90)
+CC          = $(MPIBIN)/mpiicc 
+LD          = $(MPIBIN)/mpiifort
+# Static libraries compilation options
+STATOPT     = -march=core-avx2
+# Shared libraries options
+DYNOPT      = -fPIC
+LDDYNOPT    = -shared
+AR          = ar
+ARFLAGS     = -ruv
+# Fortran libraries for C linking
+F2C_LIBS    =
+#
+# CPP keys and compiler options
+# 
+CPPDEF    = -Duse_netCDF -Duse_comm_$(CHAN) -D__VERBOSE  -DTREAT_OVERLAY
+#
+# -g is necessary in F90FLAGS and LDFLAGS for pgf90 versions lower than 6.1
+# 
+FCBASEFLAGS = -O2 -march=core-avx2 -I. -assume byterecl -qopenmp
+#FCBASEFLAGS  = -march=core-avx2 -g -traceback -check all -check noarg_temp_created -I. -assume byterecl -qopenmp
+CCBASEFLAGS  = -qopenmp
+#
+# INC_DIR : includes all *mod for each library
+INC_DIR = -I$(ARCHDIR)/include
+# FLIBS : for toys when linking in local Makefile
+FLIBS=${NETCDF_LIBRARY}
+###################
+#
+F90FLAGS    = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+f90FLAGS    = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE) 
+FFLAGS      = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE) 
+fFLAGS      = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE) 
+CCFLAGS     = $(CCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE)
+LDFLAGS     = $(FCBASEFLAGS)
+F2C_LDFLAGS = $(F2C_LIBS)
+#
+#############################################################################

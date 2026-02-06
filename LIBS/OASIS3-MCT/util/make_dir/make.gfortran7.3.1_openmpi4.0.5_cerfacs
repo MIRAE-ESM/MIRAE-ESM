@@ -1,0 +1,69 @@
+#
+# Include file for OASIS3 Makefile for a Linux system using
+# Gnu compilers and OpenMPI
+# To use this, 
+# module purge
+# module load mpi/openmpi/405_gcc731
+# module load python/3.7.7
+#
+###############################################################################
+#
+# CHAN	: communication technique used in OASIS3 (MPI1/MPI2)
+CHAN            = MPI1
+#
+# Paths for libraries, object files and binaries
+#
+# COUPLE	: path for oasis3-mct main directory
+COUPLE          = $(OASIS3_ROOT)
+#
+# ARCHDIR       : directory created when compiling
+ARCHDIR         = $(HOME)/INSTALL/oasis3-mct-gnu
+#
+# MPI command (for pyoasis scripts)
+# MPI from /softs/local/openmpi405_gcc731/bin/mpirun by module load mpi/openmpi/405_gcc731
+MPIRUN      = mpirun --oversubscribe
+#
+# NETCDF library
+NETCDF_INCLUDE = /usr/include
+NETCDF_MOD     = /usr/lib64/gfortran/modules
+NETCDF_LIBRARY = -L/usr/lib64 -lnetcdff -lnetcdf
+#
+# Make command
+MAKE        = gmake
+# Compilers
+F90         = mpifort # underlying gfortran from module load mpi/openmpi/405_gcc731
+F           = $(F90)
+f90         = $(F90)
+f           = $(F90)
+CC          = mpicc
+# Linker (needed for shared libraries)
+LD          = $(F90)
+# Static libraries compilation options
+STATOPT     =
+# Shared libraries options
+DYNOPT      = -fPIC
+LDDYNOPT    = -shared
+# Static archiver
+AR          = ar
+ARFLAGS     = -ruv
+#
+# CPP keys and compiler options
+#
+CPPDEF    = -Duse_comm_$(CHAN) -D__VERBOSE -DTREAT_OVERLAY
+#
+FCBASEFLAGS  = -O2 -ffree-line-length-512
+#FCBASEFLAGS  = -g -ffree-line-length-512 -fbounds-check
+CCBASEFLAGS  = -O2
+#
+# INC_DIR : includes all *mod for each library
+INC_DIR = -I$(ARCHDIR)/include
+#
+F90FLAGS = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE) -I$(NETCDF_MOD)
+f90FLAGS = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE) -I$(NETCDF_MOD)
+FFLAGS   = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE) -I$(NETCDF_MOD)
+fFLAGS   = $(FCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE) -I$(NETCDF_MOD)
+CCFLAGS  = $(CCBASEFLAGS) $(INC_DIR) $(CPPDEF) -I$(NETCDF_INCLUDE) -I$(NETCDF_MOD)
+LDFLAGS  = $(FCBASEFLAGS)
+F2C_LDFLAGS = -lmpi_mpifh -lgfortran -lm
+#
+#############################################################################

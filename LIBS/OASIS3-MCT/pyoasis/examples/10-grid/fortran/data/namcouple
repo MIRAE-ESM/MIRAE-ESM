@@ -1,0 +1,32 @@
+# This is a typical input file for OASIS3-MCT.
+# Keywords used in previous versions of OASIS3 
+# but now obsolete are marked "Not used"
+# Don't hesitate to ask precisions or make suggestions (oasishelp@cerfacs.fr). 
+#
+# Any line beginning with # is ignored. Blank lines are not allowed.
+#
+#########################################################################
+$NFIELDS
+ 0
+$END
+###########################################################################
+$RUNTIME
+# The total simulated time for this run in seconds
+#
+  1
+$END
+###########################################################################
+$NLOGPRT
+# Amount of information written to OASIS3-MCT log files (see User Guide)
+  0 
+$END
+###########################################################################
+$STRINGS
+#
+# The above variables are the general parameters for the experiment.
+# Everything below has to do with the fields being exchanged.
+#
+######################################################
+#
+#
+$END

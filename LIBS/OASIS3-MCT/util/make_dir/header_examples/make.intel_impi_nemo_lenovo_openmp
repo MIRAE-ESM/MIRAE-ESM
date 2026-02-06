@@ -1,0 +1,82 @@
+#
+# Include file for OASIS3 Makefile for nemo lenovo at Cerfacs with OpenMP
+# To use this, 
+#  module purge 
+#  module load compiler/intel/18.0.1.163
+#  module load mpi/intelmpi/2018.1.163-ddt
+#  module load lib/phdf5/1.10.4_impi
+#  module load lib/netcdf-fortran/4.4.4_phdf5_1.10.4
+# To use the python interface, in addition (pyoasis target for TopMakefileOasis3):
+#  module load python/3.7.7
+#  source /scratch/globc/andrea/PY_ENV/PyO/bin/activate
+#
+###############################################################################
+#
+# CHAN	: communication technique used in OASIS3 (MPI1/MPI2)
+CHAN            = MPI1
+#
+# Paths for libraries, object files and binaries
+#
+# COUPLE	: path for oasis3-mct main directory (defined in .bash_profile)
+COUPLE          = $(OASIS3_ROOT)
+#
+# ARCHDIR       : directory created when compiling
+ARCHDIR         = $(COUPLE)/NEMO_LENOVO_INTEL
+#
+# MPI library # 27/10/2020: /data/softs/intel/impi/2018.1.163/ (module load mpi/intelmpi/2018.1.163-ddt)
+MPIRUN = mpirun
+#
+# NETCDF library
+#NETCDF_LIB_DIR=
+NETCDF_INC_DIR= ${NETCDF4_INCDIR} # 27/10/2020: /data/softs/local_intel18/netcdf/4.4.4_phdf5_1.10.4/include (module load lib/netcdf-fortran/4.4.4_phdf5_1.10.4) 
+NETCDF_INCLUDE  = ${NETCDF_INC_DIR} 
+NETCDF_LIBRARY  = `nf-config --flibs` # 27/10/2020: -L/data/softs/local_intel18/netcdf/4.4.4_phdf5_1.10.4/lib -lnetcdff -L/data/softs/local_intel18/phdf5/1.10.4_impi/lib -L/data/softs/local_intel18/netcdf/4.4.4_phdf5_1.10.4/lib -Wl,-rpath,/data/softs/local_intel18/phdf5/1.10.4_impi/lib -Wl,-rpath,/data/softs/local_intel18/netcdf/4.4.4_phdf5_1.10.4/lib -lhdf5_hl -lhdf5 -lz -lcurl -lnetcdf -lnetcdf
+#
+# Compiling and other commands
+MAKE        = gmake
+F90         = mpiifort # 27/10/2020: /data/softs/intel/impi/2018.1.163/bin64/mpiifort -va chercher /data/softs/intel/compilers_and_libraries_2018.1.163/linux/bin/intel64/ifort (module load compiler/intel/18.0.1.163)
+F           = $(F90)
+f90         = $(F90)
+f           = $(F90)
+CC          = mpiicc
+LD          = mpiifort
+AR          = ar
+ARFLAGS     = -ruv
+DYNOPT      = -fPIC
+LDDYNOPT    = -shared ${NETCDF_LIBRARY}
+# Fortran libraries for C linking
+F2C_LIBS    = -lifcore -lifcoremt -lifport -limf
+#
+# CPP keys and compiler options
+# 
+CPPDEF    = -Duse_netCDF -Duse_comm_$(CHAN) -D__VERBOSE  -DTREAT_OVERLAY
+CCPPDEF   = -Duse_netCDF -Duse_comm_$(CHAN) -D__VERBOSE  -DTREAT_OVERLAY
+#
+# -g is necessary in F90FLAGS and LDFLAGS for pgf90 versions lower than 6.1
+# 
+F90FLAGS_1  = -O2 -xCORE-AVX2 -I. -assume byterecl -mt_mpi -qopenmp
+#F90FLAGS_1  = -g -traceback -fpe0 -O0 -I. -assume byterecl -mt_mpi -qopenmp
+f90FLAGS_1  = $(F90FLAGS_1)
+FFLAGS_1    = $(F90FLAGS_1)
+fFLAGS_1    = $(F90FLAGS_1)
+CCFLAGS_1   = -O2 -qopenmp
+LDFLAGS     = $(F90FLAGS_1)  ${NETCDF_LIBRARY}
+#
+###################
+#
+
+# Additional definitions that should not be changed
+#
+# BINDIR        : directory for executables
+BINDIR          = $(ARCHDIR)/bin
+# INCPSMILE     : includes all *o and *mod for each library
+INCPSMILE       = -I$(ARCHDIR)/include
+
+F90FLAGS  = $(F90FLAGS_1) $(INCPSMILE) $(CPPDEF) -I$(NETCDF_INCLUDE)
+f90FLAGS  = $(f90FLAGS_1) $(INCPSMILE) $(CPPDEF) -I$(NETCDF_INCLUDE)
+FFLAGS    = $(FFLAGS_1) $(INCPSMILE) $(CPPDEF) -I$(NETCDF_INCLUDE)
+fFLAGS    = $(fFLAGS_1) $(INCPSMILE) $(CPPDEF) -I$(NETCDF_INCLUDE)
+CCFLAGS   = $(CCFLAGS_1) $(INCPSMILE) $(CPPDEF) -I$(NETCDF_INCLUDE)
+F2C_LDFLAGS = $(F2C_LIBS)
+#
+#############################################################################

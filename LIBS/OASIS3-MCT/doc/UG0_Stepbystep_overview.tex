@@ -1,0 +1,190 @@
+\newpage
+\chapter{Introduction}
+\label{sec_step}
+
+In 1991, CERFACS started the development of
+a software interface to couple existing ocean and atmosphere numerical General
+Circulation Models. Today, different versions of the 
+OASIS3-MCT coupler are used by at least 65 modelling groups all around the
+world to couple more than 80 applications on different computing platforms\footnote{A list of
+coupled models realised with OASIS3-MCT can be found at https://oasis.cerfacs.fr/en/oasis-coupled-models/}.
+OASIS3-MCT sustained development is ensured by a collaboration
+between CERFACS and the Centre National de la Recherche Scientifique
+(CNRS) and its maintainance and user support is regularly reinforced
+with additional resources coming from European and national projects.
+
+The current OASIS3-MCT internally uses MCT, the Model
+Coupling Toolkit\footnote{www.mcs.anl.gov/research/projects/mct/} \citep{mct_larson} \newline \citep{mct_jacob}, developed by the Argonne National Laboratory in the USA. MCT implements fully parallel remapping, as a parallel matrix vector 
+multiplication, and parallel distributed exchanges of the coupling
+fields, based on pre-computed remapping weights and addresses. 
+Its design philosophy, based on flexibility and minimal invasiveness,
+is close to the OASIS3-MCT approach. 
+MCT has proven parallel performance and is, most notably, the
+underlying coupling software used in National Center for Atmospheric
+Research Community Earth System Model (NCAR CESM).
+
+OASIS3-MCT is a portable set of Fortran 77, Fortran 90 and C
+routines. Low-intrusiveness, portability and flexibility are
+OASIS3-MCT key design concepts. After compilation OASIS3-MCT is a
+coupling library to be linked to the component models, and which main
+function is to interpolate and exchange the coupling fields to form a coupled system.  OASIS3-MCT supports  coupling of 2D
+logically-rectangular fields but 3D fields and 1D fields expressed on
+unstructured grids are also supported using a one dimension
+degeneration of the structures. Thanks to MCT, all transformations,
+including remapping, are performed in parallel on the set of source or
+target component processes and all coupling exchanges are now executed
+in parallel directly between the component processes via Message Passing Interface
+(MPI). OASIS3-MCT also supports file I/O using NetCDF and has python and C language bindings. 
+
+The developments realised in the different versions of OASIS3-MCT are described in Appendix \ref{sec_changes}.
+To communicate with another component, or to perform I/O actions, a
+component model needs to include few specific calls to OASIS3-MCT Application Programming Interface (API).  The {\it namcouple} configuration file is also largely unchanged, although several options are either added, deprecated, not used
+or not supported. 
+
+Results obtained with IS-ENES2 coupling technology benchmarks show that OASIS3-MCT performs as well as, and even better at very high number of cores, than other coupling technologies, at least for up to O(10000) cores. It is therefore very likely that OASIS3-MCT will provide an efficient and
+easy-to-use coupling solution for many climate modelling groups in the few years to come. 
+
+%See appendix \ref{sec_changes} for a more detailed list of changes in this %version.
+
+\section{Step-by-step use of OASIS3-MCT}
+
+To use OASIS3-MCT for coupling codes, one has to follow these steps:
+\begin{enumerate}
+\item Obtain OASIS3-MCT source code (see chapter \ref{sec_Obtaining}).
+\item Get familiar with OASIS3-MCT, either by following the Short Private Online Course (SPOC, see  https://cerfacs.fr/online-training/) or by going through the tutorial steps. Tutorial sources are available in directory {\tt
+  examples/tutorial\_communication} and all explanations are provided in the document
+{\tt tutorial\_communication.pdf} therein.
+
+\item Identify the coupling or I/O fields and adapt the codes to
+  implement the coupling exchanges with the OASIS3-MCT coupling library based on MPI message passing.
+  The OASIS3-MCT coupling library uses NetCDF and therefore can also be used to perform I/O actions
+  from/to disk files.  For more detail on how to use the 
+  OASIS3-MCT API in the codes, see chapter \ref{sec_modelinterfacing}.
+
+\item Define all coupling and I/O parameters and the transformations
+  required to adapt each coupling field from the source model grid to
+  the target model grid. On this basis, prepare OASIS3-MCT configuring file 
+  {\it namcouple}.
+  OASIS3-MCT supports different interpolation algorithms as described in
+  chapter \ref{sec_transformations}.  Remapping files can be computed
+  online using the SCRIP options, or offline using either the SCRIP, ESMF or XIOS (see  {\tt
+  examples/regrid\_environment}, section \ref{subsec_regrid}) and read in during the run using the MAPPING
+  transformation.
+
+{\bf We strongly recommend to tests off-line the quality of the chosen transformations and remappings} using the environment available in {\tt
+  examples/regrid\_environment} and explanations provided in the document {\tt regrid\_environment.pdf} therein. 
+
+\item Generate required auxiliary data files (see chapter
+  \ref{sec_auxiliary}).
+\item Compile OASIS3-MCT, the component models and start the coupled
+  experiment. For details on how to compile and run a coupled model
+  with OASIS3-MCT, see section \ref{sec_compilationrunning}. 
+
+\end{enumerate}
+
+If you need extra help, do not hesitate to contact us at
+oasishelp(at)cerfacs.fr .
+
+\section{OASIS3-MCT sources}
+\label{sec_Obtaining}
+OASIS3-MCT sources are available from CERFACS git server. To obtain more detail on downloading
+the sources, please fill in the registration form at https://oasis.cerfacs.fr/en/downloads/ .
+
+OASIS3-MCT directory structure is the following one:
+
+\begin{verbatim}
+ - oasis3-mct/lib/cbindings        C language bindings source code
+                 /mct              Model Coupling Toolkit Coupling Software
+                 /psmile           OASIS3-MCT coupling library
+                 /scrip            SCRIP interpolation library               
+
+ - oasis3-mct/doc                  OASIS3-MCT User Guide
+
+ - oasis3-mct/util/make_dir        Utilities to compile OASIS3-MCT
+                  /load_balancing  Tool for load balancing analysis
+                  
+ - oasis3-mct/pyoasis	             Python wrapper source code
+
+ - oasis3-mct/examples             Environment to compile, run and use
+                                   different toy coupled models. 
+\end{verbatim}
+\newpage
+\section{Licenses and Copyrights}
+ 
+\subsection{OASIS3-MCT license and copyright statement}
+
+Copyright © 2021 Centre Europ\'een de Recherche et Formation
+Avanc\'ee en Calcul Scientifique (CERFACS).  
+
+This software and ancillary information called OASIS3-MCT is free
+software.  CERFACS has rights to use, reproduce, and distribute
+OASIS3-MCT. The public may copy, distribute, use, prepare derivative works and
+publicly display OASIS3-MCT under the terms of the Lesser GNU General
+Public License (LGPL) as published by the Free Software Foundation,
+provided that this notice and any statement of authorship are
+reproduced on all copies. If OASIS3-MCT is modified to produce derivative
+works, such modified software should be clearly marked, so as not to
+confuse it with the OASIS3-MCT version available from CERFACS.
+
+The developers of the OASIS3-MCT software are researchers attempting to
+build a modular and user-friendly coupler accessible to the climate
+modelling community. Although we use the tool ourselves and have made
+every effort to ensure its accuracy, we can not make any
+guarantees. We provide the software to you for free. In return,
+you --the user-- assume full responsibility for use of the software. The
+OASIS3-MCT software comes without any warranties (implied or expressed) and
+is not guaranteed to work for you or on your computer. Specifically,
+CERFACS and the various individuals involved in development and
+maintenance of the OASIS3-MCT software are not responsible for any damage
+that may result from correct or incorrect use of this software.
+
+\subsection{MCT copyright statement}
+\label{sec_MCT}
+
+                            Modeling Coupling Toolkit (MCT) Software
+
+Copyright © 2021, UChicago Argonne, LLC as Operator of Argonne National Laboratory. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+\begin{enumerate}
+\item Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+\item Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+\item The end-user documentation included with the redistribution, if any, must include the following acknowledgment: "This product includes software developed by the UChicago Argonne, LLC, as Operator of Argonne National Laboratory." Alternately, this acknowledgment may appear in the software itself, if and wherever such third-party acknowledgments normally appear.
+
+This software was authored by:
+\begin{itemize}
+\item Argonne National Laboratory Climate Modeling Group, Mathematics and Computer Science Division, Argonne National Laboratory, Argonne IL 60439
+\item Robert Jacob, tel: (630) 252-2983, E-mail: jacob@mcs.anl.gov
+\item Jay Larson, E-mail: larson@mcs.anl.gov
+\item Everest Ong
+\item Ray Loy
+\end{itemize}
+
+\item WARRANTY DISCLAIMER. THE SOFTWARE IS SUPPLIED "AS IS" WITHOUT WARRANTY OF ANY KIND. THE COPYRIGHT HOLDER, THE UNITED STATES, THE UNITED STATES DEPARTMENT OF ENERGY, AND THEIR EMPLOYEES: (1) DISCLAIM ANY WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE OR NON-IN- FRINGEMENT, (2) DO NOT ASSUME ANY LEGAL LIABILITY OR RESPONSIBILITY FOR THE ACCURACY, COMPLETENESS, OR USEFULNESS OF THE SOFTWARE, (3) DO NOT REPRESENT THAT USE OF THE SOFTWARE WOULD NOT INFRINGE PRIVATELY OWNED RIGHTS, (4) DO NOT WARRANT THAT THE SOFTWARE WILL FUNCTION UNINTERRUPTED, THAT IT IS ERROR-FREE OR THAT ANY ERRORS WILL BE CORRECTED. 
+
+\item LIMITATION OF LIABILITY. IN NO EVENT WILL THE COPYRIGHT HOLDER, THE UNITED STATES, THE UNITED STATES DEPARTMENT OF ENERGY, OR THEIR EMPLOYEES: BE LIABLE FOR ANY INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL OR PUNITIVE DAMAGES OF ANY KIND OR NATURE, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS OR LOSS OF DATA, FOR ANY REASON WHATSOEVER, WHETHER SUCH LIABILITY IS ASSERTED ON THE BASIS OF CONTRACT, TORT (INCLUDING NEGLIGENCE OR STRICT LIABILITY), OR OTHERWISE, EVEN IF ANY OF SAID PARTIES HAS BEEN WARNED OF THE POSSIBILITY OF SUCH LOSS OR DAMAGES.
+
+\end{enumerate}
+
+\subsection{The SCRIP 1.4 license copyright statement}
+\label{sec_SCRIP}
+
+The SCRIP 1.4 copyright statement reads as follows:
+
+``Copyright © 1997, 1998 the Regents of the University of California.
+This software and ancillary information (herein called SOFTWARE)
+called SCRIP is made available under the terms described here. The
+SOFTWARE has been approved for release with associated LA-CC Number
+98-45. Unless otherwise indicated, this SOFTWARE has been authored by
+an employee or employees of the University of California, operator of
+Los Alamos National Laboratory under Contract No. W-7405-ENG-36 with
+the United States Department of Energy. The United States Government
+has rights to use, reproduce, and distribute this SOFTWARE. The public
+may copy, distribute, prepare derivative works and publicly display
+this SOFTWARE without charge, provided that this Notice and any
+statement of authorship are reproduced on all copies. Neither the
+Government nor the University makes any warranty, express or implied,
+or assumes any liability or responsibility for the use of this
+SOFTWARE. If SOFTWARE is modified to produce derivative works, such
+modified SOFTWARE should be clearly marked, so as not to confuse it
+with the version available from Los Alamos National Laboratory.''
