@@ -82,10 +82,10 @@ while [ $YEAR -le $EYEAR ]; do
   YE=$((YS + 1))     # next year (end year of this loop)
 
   # Hours since INIT_YEAR to YS
-  FH0=$(TZ=UTC /home/sul/MIRAE-ESM/GRIMs/libs/etc/maketim ${INIT_YEAR}010100 -d ${YS}010100)
+  FH0=$(TZ=UTC ${LIBDIR}/etc/maketim ${INIT_YEAR}010100 -d ${YS}010100)
 
   # Duration in hours/seconds
-  DFH=$(TZ=UTC /home/sul/MIRAE-ESM/GRIMs/libs/etc/maketim ${YS}010100 -d ${YE}010100)
+  DFH=$(TZ=UTC ${LIBDIR}/etc/maketim ${YS}010100 -d ${YE}010100)
   DFSEC=$((DFH * 3600))
 
   # Forecast hour start/end for this loop
